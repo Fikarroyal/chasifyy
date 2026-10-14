@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="id" data-scheme="light" data-theme="ocean">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Chasifyy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="icon" href="assets/icon.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/icon.png">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+<div id="app"></div>
+<div id="toasts" aria-live="polite"></div>
+<noscript>Chasify memerlukan JavaScript.</noscript>
+<script>
+(function(){var a=document.getElementById('app'),s=document.createElement('script');
+function fail(m){if(!a.children.length)a.innerHTML='<div style="padding:2rem;font:15px system-ui"><b>Chasify gagal dimuat.</b><p style="margin:.5rem 0">'+m+'</p><p>Coba jalankan lewat server lokal: <code>python3 -m http.server 8080</code> lalu buka http://localhost:8080</p></div>'}
+if(location.protocol==='file:')s.src='js/app.bundle.js';else{s.type='module';s.src='js/app.js'}
+s.onerror=function(){fail('File skrip tidak ditemukan.')};document.body.appendChild(s);
+window.addEventListener('error',function(e){fail(e.message||'Terjadi kesalahan.')})})();
+</script>
+</body>
+</html>

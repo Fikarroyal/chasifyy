@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/banner.svg" alt="Chasifyy" width="100%"></p>
+<p align="center"><img src="banner.svg" alt="Chasifyy" width="100%"></p>
 
 <p align="center">
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white" alt="HTML5">
@@ -12,14 +12,6 @@
 <h3 align="center">Kelola uang dengan jelas, langsung di browser Anda.</h3>
 
 <p align="center">Aplikasi pengelolaan keuangan pribadi yang modern, interaktif, dan 100% berjalan di browser.<br>Tanpa backend, tanpa database server, tanpa langganan. Semua data tersimpan lokal di perangkat Anda.</p>
-
-<p align="center">
-<a href="#-fitur"><b>Fitur</b></a> &nbsp;·&nbsp;
-<a href="#-instalasi-dan-menjalankan"><b>Instalasi</b></a> &nbsp;·&nbsp;
-<a href="#-panduan-penggunaan"><b>Panduan</b></a> &nbsp;·&nbsp;
-<a href="#-penyimpanan-lokal-dan-keamanan-data"><b>Keamanan data</b></a> &nbsp;·&nbsp;
-<a href="#-pertanyaan-umum"><b>FAQ</b></a>
-</p>
 
 <br>
 
@@ -413,14 +405,3 @@ Tidak. Jadwal diproses saat Chasifyy dibuka, lalu semua tanggal yang terlewat se
 Pengeluaran ditampilkan sebagai nominal biasa, sedangkan pemasukan diawali tanda plus. Angka negatif, seperti sisa anggaran yang terlewati, ditulis dalam tanda kurung.
 
 </details>
-
----
-
-## <img src="https://api.iconify.design/lucide/user.svg?color=%232563EB" width="22" height="22" align="absmiddle" alt=""> Pembuat
-
-Dibuat oleh **Muhammad Zulfikar Al Rasyid, S.Kom.** ([@Fikarroyal](https://github.com/Fikarroyal)).
-
-<br>
-
-<p align="center"><img src="docs/icon.png" alt="Chasifyy" width="56"></p>
-<p align="center"><sub>Chasifyy, kelola uang dengan jelas.</sub></p>

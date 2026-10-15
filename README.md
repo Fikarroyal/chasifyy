@@ -9,8 +9,6 @@
 <img src="https://img.shields.io/badge/Icons-Lucide-F56565?style=flat-square" alt="Lucide">
 </p>
 
-<h3 align="center">Kelola uang dengan jelas, langsung di browser Anda.</h3>
-
 <p align="center">Aplikasi pengelolaan keuangan pribadi yang modern, interaktif, dan 100% berjalan di browser.<br>Tanpa backend, tanpa database server, tanpa langganan. Semua data tersimpan lokal di perangkat Anda.</p>
 
 <br>
@@ -32,26 +30,6 @@
 
 > [!IMPORTANT]
 > **Data Anda tersimpan di browser perangkat yang dipakai** (IndexedDB), bukan di server. Tidak ada akun terpusat dan tidak ada sinkronisasi antarperangkat. Chrome, Safari, dan browser lain masing-masing punya data sendiri. Buat backup JSON secara berkala (lihat bagian [Penyimpanan lokal](#-penyimpanan-lokal-dan-keamanan-data)).
-
-<details>
-<summary><b>Daftar isi</b></summary>
-
-<br>
-
-- [Fitur](#-fitur)
-- [Cara kerja dan alur](#-cara-kerja-dan-alur)
-- [Aturan perhitungan](#-aturan-perhitungan)
-- [Penyimpanan lokal dan keamanan data](#-penyimpanan-lokal-dan-keamanan-data)
-- [Teknologi](#-teknologi)
-- [Instalasi dan menjalankan](#-instalasi-dan-menjalankan)
-- [Panduan penggunaan](#-panduan-penggunaan)
-- [Kompatibilitas browser](#-kompatibilitas-browser)
-- [Pertanyaan umum](#-pertanyaan-umum)
-- [Pembuat](#-pembuat)
-
-</details>
-
----
 
 ## <img src="https://api.iconify.design/lucide/sparkles.svg?color=%232563EB" width="22" height="22" align="absmiddle" alt=""> Fitur
 
@@ -101,117 +79,6 @@
 - Mendukung `prefers-reduced-motion`.
 - Latar animasi berupa gelembung serta jaring titik yang mengikuti warna tema.
 
----
-
-## <img src="https://api.iconify.design/lucide/workflow.svg?color=%232563EB" width="22" height="22" align="absmiddle" alt=""> Cara Kerja dan Alur
-
-### Arsitektur data
-
-```mermaid
-flowchart LR
-    U(["Pengguna"]) --> UI["Tampilan<br>halaman, form, grafik"]
-    UI --> M["Modul keuangan<br>validasi dan perhitungan"]
-    M --> D["Lapisan database<br>transaksi atomik"]
-    D --> I[("IndexedDB<br>di browser")]
-    UI --> T["Preferensi tema<br>localStorage"]
-    UI --> P["Service Worker<br>cache aplikasi saja"]
-```
-
-Seluruh perhitungan (saldo, ringkasan, anggaran) dilakukan ulang dari data mentah setiap halaman dibuka, jadi angka selalu konsisten dan tidak ada saldo yang disimpan sebagai angka statis.
-
-<details>
-<summary><b>Alur akun dan sesi</b></summary>
-
-<br>
-
-```mermaid
-flowchart TD
-    A(["Buka Chasifyy"]) --> B{"Sesi masih berlaku?"}
-    B -- "Ya" --> H["Beranda"]
-    B -- "Tidak" --> W["Welcome"]
-    W --> R["Daftar"]
-    W --> L["Masuk"]
-    R --> V1{"Data valid dan username unik?"}
-    V1 -- "Tidak" --> R
-    V1 -- "Ya" --> HS["Hash kata sandi PBKDF2 dengan salt acak"]
-    HS --> S1[("Simpan akun di IndexedDB")]
-    S1 --> SS["Mulai sesi 7 hari"]
-    L --> V2{"Username atau email cocok dan kata sandi benar?"}
-    V2 -- "Tidak" --> L
-    V2 -- "Ya" --> SS
-    SS --> SD["Isi kategori dan dompet bawaan sekali saja"]
-    SD --> H
-```
-
-</details>
-
-<details>
-<summary><b>Alur mencatat transaksi</b></summary>
-
-<br>
-
-```mermaid
-sequenceDiagram
-    participant U as Pengguna
-    participant F as Form
-    participant V as Validasi
-    participant D as IndexedDB
-    participant T as Tampilan
-    U->>F: Isi nominal, kategori, dompet, tanggal
-    F->>V: Kirim data
-    alt Tidak valid
-        V-->>F: Pesan error di dekat kolom
-    else Valid
-        V->>D: Simpan, tunggu commit selesai
-        D-->>T: Muat ulang data
-        T-->>U: Saldo, ringkasan, anggaran, grafik diperbarui
-    end
-```
-
-</details>
-
-<details>
-<summary><b>Alur transaksi berulang</b></summary>
-
-<br>
-
-```mermaid
-flowchart TD
-    A(["Aplikasi dibuka"]) --> B["Baca semua jadwal aktif"]
-    B --> C["Hitung tanggal kejadian dari tanggal mulai sampai hari ini"]
-    C --> D{"Tanggal lebih baru dari lastDate?"}
-    D -- "Tidak" --> E(["Lewati, tidak ada duplikasi"])
-    D -- "Ya" --> F["Buat transaksi dengan ID tetap"]
-    F --> G["Perbarui lastDate jadwal"]
-    G --> H[("Simpan dalam satu transaksi database")]
-```
-
-Jadwal hanya diproses saat Chasifyy dibuka. Aplikasi tidak bisa membuat transaksi ketika browser benar-benar tertutup. Transaksi yang sudah dihapus tidak dibuat ulang, dan jadwal yang diaktifkan kembali tidak mengisi transaksi yang terlewat.
-
-</details>
-
-<details>
-<summary><b>Alur backup dan pemulihan</b></summary>
-
-<br>
-
-```mermaid
-flowchart LR
-    subgraph Backup
-        B1["Kumpulkan data akun"] --> B2["Unduh file JSON"] --> B3["Catat waktu backup terakhir"]
-    end
-    subgraph Pulihkan
-        R1["Pilih file"] --> R2{"Ukuran dan skema valid?"}
-        R2 -- "Tidak" --> R3["Tolak dengan pesan jelas"]
-        R2 -- "Ya" --> R4["Pratinjau isi, pilih gabung atau ganti"]
-        R4 --> R5["Petakan ID yang bentrok"]
-        R5 --> R6[("Tulis atomik, semua berhasil atau tidak sama sekali")]
-    end
-```
-
-</details>
-
----
 
 ## <img src="https://api.iconify.design/lucide/calculator.svg?color=%232563EB" width="22" height="22" align="absmiddle" alt=""> Aturan Perhitungan
 
